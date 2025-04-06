@@ -82,6 +82,9 @@
     <None Include="DataScripts\MembershipPlanTypes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="DataScripts\TokenTypes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ReleaseManager.refactorlog" />

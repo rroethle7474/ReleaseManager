@@ -2,7 +2,8 @@
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
     [UserId] UNIQUEIDENTIFIER NOT NULL, 
-    [TokenTypeId] INT NOT NULL, 
+    [TokenTypeId] INT NOT NULL,
+    [TokenValue] VARCHAR(MAX) NULL,
     [ExpiresOn] DATETIME2 NOT NULL, 
     [CreatedOn] DATETIME2 NOT NULL, 
     [CreatedBy] UNIQUEIDENTIFIER NOT NULL, 
