@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[UserToken]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [UserId] UNIQUEIDENTIFIER NOT NULL, 
+    [TokenTypeId] INT NOT NULL, 
+    [ExpiresOn] DATETIME2 NOT NULL, 
+    [CreatedOn] DATETIME2 NOT NULL, 
+    [CreatedBy] UNIQUEIDENTIFIER NOT NULL, 
+    [UpdatedOn] DATETIME2 NOT NULL, 
+    [UpdatedBy] UNIQUEIDENTIFIER NOT NULL, 
+    CONSTRAINT [FK_UserToken_User] FOREIGN KEY (UserId) REFERENCES [User](Id), 
+    CONSTRAINT [FK_UserToken_TokenType] FOREIGN KEY (TokenTypeId) REFERENCES [TokenType](Id)
+)

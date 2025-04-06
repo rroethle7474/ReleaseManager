@@ -1,0 +1,82 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+stages:
+- stage: 'Build'
+  displayName: 'Build Solution'
+  jobs:
+  - job: 'Build'
+    displayName: 'Build Job'
+    pool:
+      vmImage: 'windows-2022'
+      demands:
+      - msbuild
+      - visualstudio
+
+    steps:
+    - task: VSBuild@1
+      displayName: 'Build solution'
+      inputs:
+        solution: '**\*.sln'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation=$(build.artifactstagingdirectory) /p:OutputPath=$(Build.ArtifactStagingDirectory)'
+        platform: 'any cpu'
+        configuration: 'release'
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      inputs:
+        SourceFolder: ReleaseManager/
+        Contents: ReleaseManager.ReleasePublish.xml
+        TargetFolder: '$(build.artifactstagingdirectory)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+        ArtifactName: 'drop'
+      condition: succeededOrFailed()
+
+- stage: 'DEV'
+  displayName: 'Deploy to the DEV environment'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      SqlServer: '$(dev-mandry-db-server)'
+      SqlDatabaseName: '$(dev-mandry-db-name)'
+      SqlUserName: '$(dev-mandry-db-user)'
+      SqlPassword: '$(dev-mandry-db-password)'
+    environment: dev
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: SqlDacpacDeploymentOnMachineGroup@0
+            displayName: 'SQL Dacpack Deployment'
+            inputs:
+              DacpacFile: '$(System.DefaultWorkingDirectory)/_ReleaseManager/drop/ReleaseManager.dacpac'
+              ServerName: $(SqlServer)
+              DatabaseName: $(SqlDatabaseName)
+              AuthScheme: sqlServerAuthentication
+              SqlUsername: $(SqlUserName)
+              SqlPassword: $(SqlPassword)
+          - task: PowerShell@2
+            displayName: 'Execute Data Scripts'
+            inputs:
+              targetType: filePath
+              filePath: './$(System.DefaultWorkingDirectory)/_ReleaseManager/drop/DataScripts/ExecuteScripts.ps1'
+            env:
+              SQL_SERVER: $(SqlServer)
+              SQL_DATABASE: $(SqlDatabaseName)
+              SQL_LOGIN: $(SqlUserName)
+              SQL_PASSWORD: $(SqlPassword)

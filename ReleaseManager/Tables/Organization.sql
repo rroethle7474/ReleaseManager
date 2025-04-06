@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[Organization]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [Name] VARCHAR(100) NOT NULL, 
+    [OrganizationLogo] VARCHAR(400) NULL, 
+    [CreatedOn] DATETIME2 NOT NULL, 
+    [CreatedBy] UNIQUEIDENTIFIER NOT NULL, 
+    [UpdatedOn] DATETIME2 NOT NULL, 
+    [UpdatedBy] UNIQUEIDENTIFIER NOT NULL
+)
