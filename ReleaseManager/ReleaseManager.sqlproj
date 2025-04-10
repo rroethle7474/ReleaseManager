@@ -56,26 +56,12 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="Tables" />
     <Folder Include="StoredProcedures" />
     <Folder Include="DataScripts" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\User.sql" />
-    <Build Include="Tables\UserExternalProvider.sql" />
-    <Build Include="Tables\UserMembershipPlan.sql" />
-    <Build Include="Tables\Organization.sql" />
-    <Build Include="Tables\OrganizationSubscription.sql" />
-    <Build Include="Tables\MembershipPlanType.sql" />
-    <Build Include="Tables\Role.sql" />
-    <Build Include="Tables\UserRole.sql" />
-    <Build Include="Tables\MembershipPlan.sql" />
-    <Build Include="Tables\UserToken.sql" />
-    <Build Include="Tables\OrganizationUser.sql" />
-    <Build Include="Tables\DevOpsOrganization.sql" />
-    <Build Include="Tables\SubscriptionStatus.sql" />
-    <Build Include="Tables\TokenType.sql" />
-    <Build Include="Tables\SystemSetting.sql" />
     <None Include="DataScripts\SystemSettings.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -85,11 +71,39 @@
     <None Include="DataScripts\TokenTypes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Build Include="dbo\Tables\CloudProvider.sql" />
+    <None Include="DataScripts\CloudProviders.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Build Include="dbo\Tables\DevOpsOrganization.sql" />
+    <Build Include="dbo\Tables\MembershipPlan.sql" />
+    <Build Include="dbo\Tables\MembershipPlanType.sql" />
+    <Build Include="dbo\Tables\Organization.sql" />
+    <Build Include="dbo\Tables\OrganizationSubscription.sql" />
+    <Build Include="dbo\Tables\OrganizationUser.sql" />
+    <Build Include="dbo\Tables\Role.sql" />
+    <Build Include="dbo\Tables\SubscriptionStatus.sql" />
+    <Build Include="dbo\Tables\SystemSetting.sql" />
+    <Build Include="dbo\Tables\TokenType.sql" />
+    <Build Include="dbo\Tables\User.sql" />
+    <Build Include="dbo\Tables\UserExternalProvider.sql" />
+    <Build Include="dbo\Tables\UserMembershipPlan.sql" />
+    <Build Include="dbo\Tables\UserRole.sql" />
+    <Build Include="dbo\Tables\UserToken.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ReleaseManager.refactorlog" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReleaseManager.ReleasePublish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DataScripts\AuthMethods.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\CloudOrganization.sql" />
+    <Build Include="dbo\Tables\AuthMethod.sql" />
   </ItemGroup>
 </Project>
